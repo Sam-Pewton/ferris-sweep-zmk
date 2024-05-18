@@ -77,8 +77,8 @@
         dvorak_layer_two {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ <ESC>    │          │ (MGMT)   │          │ (QWERTY) │   │          │          │          │          │          │
-           &kp ESC    &none      &to 6      &none      &to 3          &kp TAB    &none      &none      &none      &kp DEL 
+        //│ <ESC>    │          │          │          │          │   │          │          │          │          │          │
+           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
            &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
@@ -96,7 +96,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-           &kp Q      &kp W      &kp E      &kp P      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
+           &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ : ;      │
            HRML(A,    S,         D,         F)         &kp G          &kp H      HRMR(J,    K,         L,         SEMI)
@@ -131,8 +131,8 @@
         qwerty_layer_two {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │          │ (MGMT)   │          │ (DVORAK) │   │          │          │          │          │          │
-           &kp ESC    &none      &to 6      &none      &to 0          &kp TAB    &none      &none      &none      &kp DEL 
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
            &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
