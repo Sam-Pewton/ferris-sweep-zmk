@@ -68,10 +68,10 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│ <ESC>    │          │          │          │ (QWERTY) │   │          │          │          │          │          │
-           &kp ESC    &trans     &trans     &trans     &to 3         &kp TAB     &trans     &trans     &trans    &kp DEL 
+           &kp ESC    &trans     &trans     &trans     &to 3          &kp TAB    &trans     &trans     &trans     &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
-           &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp UP     &kp DOWN   &RIGHT     &trans 
+           &trans     &trans     &trans     &trans     &trans         &kp LEFT   &kp UP     &kp DOWN   &kp RIGHT  &trans 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
