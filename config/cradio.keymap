@@ -1,32 +1,38 @@
 // Copyright (c) 2022 The ZMK Contributors
 // SPDX-License-Identifier: MIT
 
+// TODO?
+// - Function keys
+// - Duplicate key reduction
+// - Gaming layer?
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
 // Home row mods macro
-#define HRML(k1,k2,k3,k4) &ht LSHFT k1  &ht LALT k2  &ht LCTRL k3  &ht LGUI k4
-#define HRMR(k1,k2,k3,k4) &ht RGUI k1  &ht RCTRL k2  &ht RALT k3  &ht RSHFT k4
+#define HRML(k1,k2,k3,k4) &hm LALT k1  &hm LMETA k2  &hm LCTRL k3  &hm LSHIFT k4
+#define HRMR(k1,k2,k3,k4) &hm RSHIFT k1  &hm RCTRL k2  &hm RMETA k3  &hm RALT k4
 
 / {
     behaviors {
-        ht: hold_tap {
+        hm: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            require-prior-idle-ms = <100>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <5>;
+            require-prior-idle-ms = <250>;
             bindings = <&kp>, <&kp>;
         };
     };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
+    combos {
+        // Send me to the mgmt layer (bluetooth management)
+        compatible = "zmk,combos";
+        combo_settings {
+            timeout-ms = <300>;
+            key-positions = <30 31>;
+            bindings = <&to 6>;
         };
     };
 
@@ -35,68 +41,126 @@
         default_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│ ' "      │ , <      │ . >      │ P        │ Y        │   │ F        │ G        │ C        │ R        │ L        │
+           &kp SQT    &kp COMMA  &kp DOT    &kp P      &kp Y          &kp F      &kp G      &kp C      &kp R      &kp L
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ A        │ O        │ E        │ U        │ I        │   │ D        │ H        │ T        │ N        │ S        │
+           HRML(A,    O,         E,         U)         &kp I          &kp D      HRMR(H,    T,         N,         S)
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ ; :      │ Q        │ J        │ K        │ X        │   │ B        │ M        │ W        │ V        │ Z        │
+           &kp SEMI   &kp Q      &kp J      &kp K      &kp X          &kp B      &kp M      &kp W      &kp V      &kp Z
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+        //                                 │ ENTER    │ SPACE    │   │ BSPACE   │ SYM (D)  │  
+                                            &kp ENTER  &kp SPACE      &kp BSPC   &to 1
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            >;
+        };
+
+        dvorak_layer_one {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│ !        │ ` ~      │ {        │ }        │ #        │   │ &        │ 7 &      │ 8 *      │ 9 (      │ *        │
+           &kp EXCL   &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp AMPS   &kp N7     &kp N8     &kp N9     &kp ASTRK
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ # ALT    │ $ META   │ ( CTRL   │ ) SHFT   │ \ |      │   │ - _      │ 4 $ SHFT │ 5 % CTRL │ 6 ^ META │ = ALT    │
+           HRML(HASH, DLLR,      LPAR,      RPAR)      &kp BSLH       &kp MINUS  HRMR(N4,   N5,        N6,        EQUAL)
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ %        │ ^        │ [ {      │ ] }      │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ /        │
+           &kp PRCNT  &kp CARET  &kp LBKT   &kp RBKT   &kp TILDE      &kp N0     &kp N1     &kp N2     &kp N3     &kp FSLH
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+        //                                 │ (DVORAK) │ SPACE    │   │ BSPACE   │ EXTRA (D)│  
+                                            &to 0      &trans         &trans     &to 2
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            >;
+        };
+
+        dvorak_layer_two {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│ <ESC>    │          │          │          │          │   │          │          │          │          │          │
+           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+        //                                 │ (DVORAK) │ SPACE    │   │ BSPACE   │ SYM (D)  │  
+                                            &to 0      &trans         &trans     &to 1
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            >;
+        };
+
+        qwerty_default {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
+           &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ ' "      │
-            HRML(A,        S,         D,         F)     &kp G          &kp H      HRMR(J,        K,         L,        SQT)
+        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ : ;      │
+           HRML(A,    S,         D,         F)         &kp G          &kp H      HRMR(J,    K,         L,         SEMI)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH
+        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ ,        │ .        │ ' "      │
+           &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp SQT
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                            &lt 2 TAB   &kp ENTER     &kp SPACE  &lt 1 BSPC
+        //                                 │ ENTER    │ SPACE    │   │ BSPACE   │ SYM (Q)  │  
+                                            &kp ENTER  &trans         &trans     &to 4
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        right_layer {
+        qwerty_layer_one {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ INSERT   │  1       │  2       │  3       │          │   │ HOME     │ PAGE DN  │ PAGE UP  │ END      │  :       │
-            &kp INS    &kp N1     &kp N2     &kp N3     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &kp COLON
+        //│ !        │  `       │ {        │ }        │ #        │   │ &        │ 7 &      │ 8 *      │ 9 (      │ *        │
+           &kp EXCL   &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp AMPS   &kp N7     &kp N8     &kp N9     &kp ASTRK
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ DELETE   │  4       │  5       │  6       │          │   │ LEFT     │ DOWN     │ UP       │ RIGHT    │  ;       │
-            &kp DEL    &kp N4     &kp N5     &kp N6     &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &kp SEMI
+        //│ # ALT    │ $ META   │ ( CTRL   │ ) SHFT   │ \ |      │   │ - _      │ 4 $ SHFT │ 5 % CTRL │ 6 ^ META │ = ALT    │
+           HRML(HASH, DLLR,       LPAR,      RPAR)   &kp BSLH       &kp MINUS   HRMR(N4,     N5,         N6,     EQUAL)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CAPS     │  7       │  8       │  9       │  0       │   │          │          │          │          │          │
-           &caps_word  &kp N7     &kp N8     &kp N9     &kp N0         &trans     &trans     &trans     &trans     &trans
+        //│ %        │ ^        │ [        │ ]        │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ /        │
+            &kp PRCNT  &kp CARET  &kp LBKT   &kp RBKT   &kp TILDE      &kp N0     &kp N1     &kp N2     &kp N3     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &kp ESC        &trans     &trans
+        //                                 │ (QWERTY) │ SPACE    │   │ BSPACE   │ EXTRA (Q)│  
+                                             &to 3      &trans         &trans     &to 5
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        left_layer {
+        qwerty_layer_two {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  [       │  {       │  }       │          │   │  ^       │  (       │  )       │  ]       │  ~       │
-            &trans     &kp LBKT   &kp LBRC   &kp RBRC   &trans         &kp CARET  &kp LPAR   &kp RPAR   &kp RBKT   &kp TILDE
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  !       │  @       │  #       │  $       │  %       │   │  *       │  -       │  =       │  \       │  `       │
-            &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp ASTRK  &kp MINUS  &kp EQUAL  &kp BSLH   &kp GRAVE
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │  &       │  _       │  +       │  │       │          │
-            &trans     &trans     &trans     &trans     &trans         &kp AMPS   &kp UNDER  &kp PLUS   &kp PIPE   &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &none      &none      &none      &none      &none          &none      &none      &none      &none      &none 
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
+        //                                 │ (QWERTY) │ SPACE    │   │ BSPACE   │ SYM (Q)  │  
+                                            &to 3      &trans         &trans     &to 4
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        tri_layer {
+        mgmt_layer {
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ RESET    │          │          │          │PROFILE 0 │   │          │          │          │          │  RESET   │
-           &sys_reset  &trans     &trans     &trans    &bt BT_SEL 0    &trans     &trans     &trans     &trans    &sys_reset
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│BOOTLOADER│          │          │          │PROFILE 1 │   │          │          │          │          │BOOTLOADER│
-          &bootloader  &trans     &trans     &trans    &bt BT_SEL 1    &trans     &trans     &trans     &trans    &bootloader
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │ CLEAR BT │PROFILE 2 │   │          │          │          │          │          │
-            &trans     &trans     &trans    &bt BT_CLR &bt BT_SEL 2    &trans     &trans     &trans     &trans     &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+        //╭────────────┬────────────┬────────────┬────────────┬────────────╮   ╭────────────┬────────────┬────────────┬────────────┬────────────╮
+        //│ CLR BT     │            │            │            │ (DVORAK)   │   │ (QWERTY)   │            │            │            │            │
+           &bt BT_CLR   &none        &none        &none        &to 0            &to 3        &none        &none        &none        &none 
+        //├────────────┼────────────┼────────────┼────────────┼────────────┤   ├────────────┼────────────┼────────────┼────────────┼────────────┤
+        //│            │            │            │            │            │   │            │            │            │            │            │
+           &none      &none      &none      &none      &none                    &none        &none        &none        &none        &none  
+        //├────────────┼────────────┼────────────┼────────────┼────────────┤   ├────────────┼────────────┼────────────┼────────────┼────────────┤
+        //│ DEVICE 1   │ DEVICE 2   │ DEVICE 3   │ DEVICE 4   │ DEVICE 5   │   │            │            │            │            │            │
+           &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4     &none        &none        &none        &none        &none
+        //╰────────────┴────────────┴────────────┼────────────┼────────────┤   ├────────────┼────────────┼────────────┴────────────┴────────────╯
+        //                                       │            │            │   │            │            │  
+                                                  &none        &none            &none        &none
+        //                                       ╰────────────┴────────────╯   ╰────────────┴────────────╯
             >;
         };
     };
