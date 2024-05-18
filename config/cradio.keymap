@@ -17,7 +17,7 @@
 / {
     behaviors {
         hm: homerow_mods {
-            compatible = "zmk,behaviour-hold-tap";
+            compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             tapping-term-ms = <150>;
             quick-tap-ms = <0>;
