@@ -19,9 +19,10 @@
         hm: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
+            tapping-term-ms = <50>;
             quick-tap-ms = <5>;
-            require-prior-idle-ms = <250>;
+            require-prior-idle-ms = <100>;
+            flavor = "balanced"
             bindings = <&kp>, <&kp>;
         };
     };
@@ -59,13 +60,13 @@
         dvorak_layer_one {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ !        │ ` ~      │ {        │ }        │ #        │   │ &        │ 7 &      │ 8 *      │ 9 (      │ *        │
-           &kp EXCL   &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp AMPS   &kp N7     &kp N8     &kp N9     &kp ASTRK
+        //│ <ESC>    │ ` ~      │ {        │ }        │ #        │   │ <TAB>    │ 7 &      │ 8 *      │ 9 (      │ *        │
+           &kp ESC    &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp TAB    &kp N7     &kp N8     &kp N9     &kp ASTRK
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│ # ALT    │ $ META   │ ( CTRL   │ ) SHFT   │ \ |      │   │ - _      │ 4 $ SHFT │ 5 % CTRL │ 6 ^ META │ = ALT    │
            HRML(HASH, DLLR,      LPAR,      RPAR)      &kp BSLH       &kp MINUS  HRMR(N4,   N5,        N6,        EQUAL)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ %        │ ^        │ [ {      │ ] }      │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ /        │
+        //│ %        │ ^        │ [ {      │ ] }      │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ /  ?     │
            &kp PRCNT  &kp CARET  &kp LBKT   &kp RBKT   &kp TILDE      &kp N0     &kp N1     &kp N2     &kp N3     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 │ (DVORAK) │ SPACE    │   │ BSPACE   │ EXTRA (D)│  
@@ -77,8 +78,8 @@
         dvorak_layer_two {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ <ESC>    │          │          │          │          │   │          │          │          │          │          │
-           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
+        //│          │          │          │          │          │   │          │          │          │          │          │
+           &none      &none      &none      &none      &none          &none      &none      &none      &none      &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
            &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
@@ -113,14 +114,14 @@
         qwerty_layer_one {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ !        │  `       │ {        │ }        │ #        │   │ &        │ 7 &      │ 8 *      │ 9 (      │ *        │
-           &kp EXCL   &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp AMPS   &kp N7     &kp N8     &kp N9     &kp ASTRK
+        //│ <ESC>    │  `       │ {        │ }        │ #        │   │ <TAB>    │ 7 &      │ 8 *      │ 9 (      │ *        │
+           &kp ESC    &kp GRAVE  &kp LBRC   &kp RBRC   &kp HASH       &kp TAB    &kp N7     &kp N8     &kp N9     &kp ASTRK
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ # ALT    │ $ META   │ ( CTRL   │ ) SHFT   │ \ |      │   │ - _      │ 4 $ SHFT │ 5 % CTRL │ 6 ^ META │ = ALT    │
+        //│ # ALT    │ $ META   │ ( CTRL   │ ) SHFT   │ \ |      │   │ - _      │ 4 $ SHFT │ 5 % CTRL │ 6 ^ META │ = + ALT  │
            HRML(HASH, DLLR,       LPAR,      RPAR)   &kp BSLH       &kp MINUS   HRMR(N4,     N5,         N6,     EQUAL)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ %        │ ^        │ [        │ ]        │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ /        │
-            &kp PRCNT  &kp CARET  &kp LBKT   &kp RBKT   &kp TILDE      &kp N0     &kp N1     &kp N2     &kp N3     &kp FSLH
+        //│ %        │ ^        │ [ }      │ ] }      │ ~        │   │ 0 )      │ 1 !      │ 2 @      │ 3 #      │ / ?      │
+           &kp PRCNT  &kp CARET  &kp LBKT   &kp RBKT   &kp TILDE      &kp N0     &kp N1     &kp N2     &kp N3     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 │ (QWERTY) │ SPACE    │   │ BSPACE   │ EXTRA (Q)│  
                                              &to 3      &trans         &trans     &to 5
@@ -132,7 +133,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│          │          │          │          │          │   │          │          │          │          │          │
-           &kp ESC    &none      &none      &none      &none          &kp TAB    &none      &none      &none      &kp DEL 
+           &none      &none      &none      &none      &none          &none      &none      &none      &none      &kp DEL 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
            &none      &none      &none      &none      &none          &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none  
